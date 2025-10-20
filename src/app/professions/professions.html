@@ -1,0 +1,70 @@
+<nz-page-header>
+  <nz-page-header-title>Профессии</nz-page-header-title>
+</nz-page-header>
+
+<nz-collapse>
+  <nz-collapse-panel nzHeader="Фильтры" [nzActive]="true" [nzExtra]="filterReset">
+    <form nz-form [formGroup]="filters" nzLayout="vertical">
+      <div nz-flex nzJustify="space-between" nzGap="small">
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Название</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="name" placeholder="Введите название" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Описание</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="description" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-divider />
+
+<nz-table
+  [nzData]="professions"
+  [nzLoading]="loading"
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="query$.value.size"
+  [nzPageIndex]="query$.value.page"
+  [nzShowSizeChanger]="true"
+  [nzPageSizeOptions]="[10, 20, 50]"
+  (nzQueryParams)="onQueryParamsChange($event)"
+>
+  <thead>
+  <tr>
+    <th nzShowSort [(nzSortOrder)]="sortMap['id']" (nzSortOrderChange)="sort('id', $event)">ID</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['name']" (nzSortOrderChange)="sort('name', $event)">Название</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['description']" (nzSortOrderChange)="sort('description', $event)">Описание</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['createdAt']" (nzSortOrderChange)="sort('createdAt', $event)">Создан</th>
+    <th style="width: 30px"></th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (profession of professions; track profession.id) {
+      <tr>
+        <td>
+          <a [routerLink]="[profession.id]">{{ profession.id }}</a>
+        </td>
+        <td>{{ profession.name }}</td>
+        <td>{{ profession.description }}</td>
+        <td>{{ profession.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+        <td>
+          <button nz-button nzType="default" nzSize="small" nz-popconfirm (click)="updateProfession(profession)">
+            <nz-icon nzTheme="outline" nzType="edit"></nz-icon>
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
+
+<ng-template #filterReset>
+  <button nz-button nzType="default" nzSize="small" (click)="resetFilters()" [disabled]="filters.dirty" type="button">Сбросить</button>
+</ng-template>
