@@ -1,0 +1,32 @@
+<nz-layout class="app-layout">
+  <nz-layout>
+    <nz-sider nzWidth="350px">
+      <div class="logo">
+        <span class="logo-title">Internship Devs</span>
+      </div>
+      <ul nz-menu nzTheme="dark" nzMode="inline">
+        <li nz-menu-item routerLink="users"><nz-icon nzType="user" nzTheme="outline" style="margin-right: 4px;" />Пользователи</li>
+        <li nz-menu-item routerLink="professions">Профессии</li>
+        <li nz-submenu nzTitle="Тесты">
+          <ul>
+            <li nz-menu-item routerLink="tests">Тесты</li>
+            <li nz-menu-item routerLink="results">Результаты</li>
+            <li nz-menu-item routerLink="questions">Вопросы</li>
+            <li nz-menu-item routerLink="answer-options">Варианты ответов</li>
+            <li nz-menu-item routerLink="option-weights">Веса ответов</li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout>
+      <nz-header>
+
+      </nz-header>
+      <nz-content>
+        <div class="inner-content">
+          <ng-content></ng-content>
+        </div>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>

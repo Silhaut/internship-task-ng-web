@@ -1,0 +1,28 @@
+<div class="login-wrapper">
+  <nz-card
+    nzTitle="Вход в панель админки"
+    style="width: 100%; min-width: 350px; max-width: 600px"
+  >
+    <form nz-form [formGroup]="form" nzLayout="vertical" (ngSubmit)="onSave()">
+      <nz-form-item>
+        <nz-form-label>Username</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="formControlErrorTip">
+          <input nz-input formControlName="username" type="text" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label>Пароль</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="formControlErrorTip">
+          <input nz-input formControlName="password" type="password" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <button nz-button nzType="primary" [disabled]="form.invalid">Войти</button>
+    </form>
+  </nz-card>
+</div>
+
+<ng-template #formControlErrorTip let-control>
+  @if (control.hasError('required')) { Это обязательное поле }
+</ng-template>
