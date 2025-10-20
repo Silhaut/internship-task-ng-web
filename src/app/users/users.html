@@ -88,7 +88,9 @@
   <tbody>
     @for (user of users; track user.id) {
       <tr>
-        <td>{{ user.id }}</td>
+        <td>
+          <a [routerLink]="[user.id]">{{ user.id }}</a>
+        </td>
         <td>&#64;{{ user.username }}</td>
         <td>{{ user.telegramId }}</td>
         <td>{{ user.firstName }}</td>

@@ -17,4 +17,8 @@ export class UsersService {
   getUsers(query: UsersQueryDto): Observable<PagedDataDto<UserDto>> {
     return this.apiClient.getPaged<PagedDataDto<UserDto>>(this.apiUrl, query);
   }
+
+  getUser(userId: string): Observable<UserDto> {
+    return this.http.get<UserDto>(`http://localhost:3000/api/v1/users/${userId}`);
+  }
 }

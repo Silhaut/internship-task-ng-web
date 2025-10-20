@@ -14,6 +14,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
+import { RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-users',
@@ -28,8 +29,9 @@ import { NzFlexModule } from 'ng-zorro-antd/flex';
     NzInputModule,
     NzFormModule,
     NzButtonModule,
-    ReactiveFormsModule,
     NzTagModule,
+    ReactiveFormsModule,
+    RouterModule,
   ],
   templateUrl: './users.html',
   styleUrl: './users.scss'
