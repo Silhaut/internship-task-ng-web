@@ -1,3 +1,107 @@
-@if (users$ | async; as users) {
-  {{ users }}
-}
+<nz-page-header>
+  <nz-page-header-title>Пользователи</nz-page-header-title>
+</nz-page-header>
+
+<nz-collapse>
+  <nz-collapse-panel nzHeader="Фильтры" [nzActive]="true" [nzExtra]="filterReset">
+    <form nz-form [formGroup]="filters" nzLayout="vertical">
+      <div nz-flex nzJustify="space-between" nzGap="small">
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Username</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="username" placeholder="@username" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Telegram ID</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="telegramId" placeholder="123456789" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-flex nzJustify="space-between" nzGap="small">
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Имя</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="firstName" placeholder="Имя" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Фамилия</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="lastName" placeholder="Фамилия" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-flex nzJustify="space-between" nzGap="small">
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Телефон</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="phone" placeholder="7 777 777 7777" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Роль</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="role" nzAllowClear nzPlaceHolder="Выберите роль">
+              <nz-option nzValue="ADMIN" nzLabel="Админ"></nz-option>
+              <nz-option nzValue="USER" nzLabel="Пользователь"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-divider />
+
+<nz-table
+  [nzData]="users"
+  [nzLoading]="loading"
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="query$.value.size"
+  [nzPageIndex]="query$.value.page"
+  [nzShowSizeChanger]="true"
+  [nzPageSizeOptions]="[10, 20, 50]"
+  [nzScroll]="{ x: '1200px' }"
+>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Telegram ID</th>
+    <th>Username</th>
+    <th>Имя</th>
+    <th>Фамилия</th>
+    <th>Роль</th>
+    <th>Телефон</th>
+    <th>Создан</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (user of users; track user.id) {
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>&#64;{{ user.username }}</td>
+        <td>{{ user.telegramId }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>
+          <nz-tag>{{ user.role | titlecase }}</nz-tag>
+        </td>
+        <td>+{{ user.phone }}</td>
+        <td>{{ user.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
+
+<ng-template #filterReset>
+  <button nz-button nzType="default" nzSize="small" (click)="resetFilters()" [disabled]="filters.dirty" type="button">Сбросить</button>
+</ng-template>
