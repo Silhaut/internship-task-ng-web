@@ -1,1 +1,20 @@
-<p>profession-view works!</p>
+<nz-page-header>
+  <nz-page-header-title>Информация о профессии</nz-page-header-title>
+</nz-page-header>
+@if (profession) {
+  <nz-card [nzTitle]="updateProfessionExtra">
+    <nz-descriptions nzBordered [nzColumn]="1">
+      <nz-descriptions-item nzTitle="ID">{{ profession.id }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Название">{{ profession.name }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Описание">{{ profession.description }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Зарегестрирован">{{ profession.createdAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Последнее обновление">{{ profession.updatedAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+    </nz-descriptions>
+  </nz-card>
+}
+
+<ng-template #updateProfessionExtra>
+  <button nz-button nzType="primary" (click)="updateProfession()">
+    <nz-icon nzTheme="outline" nzType="edit"></nz-icon> Обновить
+  </button>
+</ng-template>

@@ -1,4 +1,9 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -10,6 +15,7 @@ import en from '@angular/common/locales/en';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { authInterceptor } from './_interceptors/auth-interceptor';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 registerLocaleData(en);
 
@@ -22,5 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideNzI18n(en_US),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimations(),
+    importProvidersFrom(NzModalModule)
   ]
 };

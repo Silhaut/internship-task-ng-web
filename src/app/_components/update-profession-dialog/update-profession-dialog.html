@@ -1,1 +1,29 @@
-<p>update-profession-dialog works!</p>
+<div>
+  <form nz-form [formGroup]="form" nzLayout="vertical">
+    <div>
+      <nz-form-item>
+        <nz-form-label nzRequired>Название</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="errorTip">
+          <input nz-input formControlName="name" type="text">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div>
+      <nz-form-item>
+        <nz-form-label nzRequired>Описание</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="errorTip">
+          <input nz-input formControlName="description" type="text">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+  <ng-template #errorTip let-control>
+    @if (control.hasError('required')) {
+      Это обязательное поле
+    }
+  </ng-template>
+</div>
+<div *nzModalFooter>
+  <button type="button" nz-button nzType="default" (click)="onCancel()">Отменить</button>
+  <button type="submit" nz-button nzType="primary" [disabled]="form.invalid" (click)="onSave()">Обновить</button>
+</div>
