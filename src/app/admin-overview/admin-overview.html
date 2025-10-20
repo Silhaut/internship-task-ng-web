@@ -59,7 +59,9 @@
       <tbody>
         @for (user of overview.users.latest; track user.id) {
           <tr>
-            <td>{{ user.id }}</td>
+            <td>
+              <a [routerLink]="['users', user.id]">{{ user.id }}</a>
+            </td>
             <td>
               <span class="username">&#64;{{ user.username }}</span>
             </td>

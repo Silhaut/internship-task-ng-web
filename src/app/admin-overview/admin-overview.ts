@@ -10,6 +10,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-overview',
@@ -22,6 +23,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzDividerModule,
     NzStatisticModule,
     NzTableModule,
+    RouterModule,
   ],
   templateUrl: './admin-overview.html',
   styleUrl: './admin-overview.scss'

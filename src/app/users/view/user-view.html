@@ -1,0 +1,21 @@
+<nz-page-header>
+  <nz-page-header-title>Информация о пользователе</nz-page-header-title>
+</nz-page-header>
+@if (user) {
+  <nz-card>
+    <nz-descriptions nzBordered [nzColumn]="1">
+      <nz-descriptions-item nzTitle="ID">{{ user.id }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Telegram ID">{{ user.telegramId }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Username">&#64;{{ user.username }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="ФИО">{{ user.firstName }} {{ user.lastName }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Телефон">{{ user.phone }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Роль">
+        <nz-tag>
+          {{ user.role | titlecase }}
+        </nz-tag>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Зарегестрирован">{{ user.createdAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Последнее обновление">{{ user.updatedAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+    </nz-descriptions>
+  </nz-card>
+}
