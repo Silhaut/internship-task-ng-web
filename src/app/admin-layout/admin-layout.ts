@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Navigation } from '../navigation/navigation';
+import { Navigation } from '../_components/navigation/navigation';
 import { RouterModule } from '@angular/router';
 
 @Component({
