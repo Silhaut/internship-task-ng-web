@@ -1,0 +1,181 @@
+@if (overviewData$ | async; as overview) {
+  <nz-page-header>
+    <nz-page-header-title>Основные данные</nz-page-header-title>
+  </nz-page-header>
+  <div class="dashboard-wrapper">
+    <!-- ======== STAT CARDS ======== -->
+    <div class="stat-cards" nz-flex nzWrap="wrap" nzGap="small">
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Активных пользователей"
+          [nzValue]="overview.users.total"
+          [nzValueStyle]="{ color: '#3f8600' }"
+        />
+      </nz-card>
+
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Всего тестов"
+          [nzValue]="overview.tests.total"
+          [nzValueStyle]="{ color: '#1890ff' }"
+        />
+      </nz-card>
+
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Завершено тестов"
+          [nzValue]="overview.tests.completed"
+          [nzValueStyle]="{ color: '#722ed1' }"
+        />
+      </nz-card>
+
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Всего профессий"
+          [nzValue]="overview.professions.total"
+          [nzValueStyle]="{ color: '#eb2f96' }"
+        />
+      </nz-card>
+    </div>
+
+    <nz-divider nzText="Последние пользователи" nzOrientation="left"></nz-divider>
+
+    <!-- ======== USERS TABLE ======== -->
+    <nz-table
+      #usersTable
+      nzBordered
+      nzSize="middle"
+      [nzData]="overview.users.latest"
+    >
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Зарегистрирован</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (user of overview.users.latest; track user.id) {
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>
+              <span class="username">@{{ user.username }}</span>
+            </td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+          </tr>
+        }
+      </tbody>
+    </nz-table>
+
+    <nz-divider nzText="Последние тесты" nzOrientation="left"></nz-divider>
+
+    <!-- ======== TESTS TABLE ======== -->
+    <nz-table
+      nzBordered
+      nzSize="middle"
+      [nzData]="overview.tests.latest"
+    >
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Пользователь</th>
+        <th>Профессия</th>
+        <th>Пройден</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (test of overview.tests.latest; track test.id) {
+          <tr>
+            <td>{{ test.id }}</td>
+            <td>
+              @{{ test.user.username }}
+              <span class="fullname">{{ test.user.firstName }} {{ test.user.lastName }}</span>
+            </td>
+            <td>
+              <nz-tag>
+                {{ test.profession }}
+              </nz-tag>
+            </td>
+            <td>{{ test.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+          </tr>
+        }
+      </tbody>
+    </nz-table>
+
+    <nz-divider nzText="Вопросы и ответы" nzOrientation="left"></nz-divider>
+
+    <div class="stat-cards" nz-flex nzWrap="wrap" nzGap="small">
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Всего вопросов"
+          [nzValue]="overview.questions.total"
+          [nzValueStyle]="{ color: '#13c2c2' }"
+        />
+      </nz-card>
+
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Всего ответов"
+          [nzValue]="overview.questions.totalAnswers"
+          [nzValueStyle]="{ color: '#faad14' }"
+        />
+      </nz-card>
+
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Сред. ответов на вопрос"
+          [nzValue]="overview.questions.avgAnswersPerQuestion"
+          [nzValueStyle]="{ color: '#2f54eb' }"
+        />
+      </nz-card>
+    </div>
+
+    <nz-divider nzText="Профессии" nzOrientation="left"></nz-divider>
+
+    <div class="stat-cards" nz-flex nzWrap="wrap" nzGap="small">
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Всего профессий"
+          [nzValue]="overview.professions.total"
+          [nzValueStyle]="{ color: '#eb2f96' }"
+        />
+      </nz-card>
+
+      <nz-card nzHoverable class="stat-card">
+        <nz-statistic
+          nzTitle="Самая популярная профессия"
+          [nzValue]="overview.professions.mostCommon"
+          [nzValueStyle]="{ color: '#722ed1' }"
+        />
+      </nz-card>
+    </div>
+
+    <nz-divider nzText="Топ профессий" nzOrientation="left">Топ профессий</nz-divider>
+
+    <nz-table
+      nzBordered
+      nzSize="middle"
+      [nzData]="overview.tests.topProfessions"
+    >
+      <thead>
+      <tr>
+        <th>Профессия</th>
+        <th>Количество</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (item of overview.tests.topProfessions; track item.profession) {
+          <tr>
+            <td>{{ item.profession }}</td>
+            <td>{{ item.count }}</td>
+          </tr>
+        }
+      </tbody>
+    </nz-table>
+
+  </div>
+}
