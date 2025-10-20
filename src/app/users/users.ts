@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, debounceTime, switchMap } from 'rxjs';
+import { BehaviorSubject, debounceTime, skip, switchMap } from 'rxjs';
 import { UserDto } from '../_dto/user.dto';
 import { UsersService } from '../_services/users';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -59,9 +59,18 @@ export class Users implements OnInit {
     phone: [''],
   });
 
+  sortMap: Record<string, 'ascend' | 'descend' | null> = {
+    id: null,
+    telegramId: null,
+    username: null,
+    firstName: null,
+    lastName: null,
+    createdAt: 'descend',
+  };
+
   ngOnInit() {
     this.filters.valueChanges
-      .pipe(debounceTime(400))
+      .pipe(debounceTime(400), skip(1))
       .subscribe((filters) => {
         this.query$.next({
           ...this.query$.value,
@@ -87,5 +96,25 @@ export class Users implements OnInit {
 
   resetFilters() {
     this.filters.reset();
+  }
+
+  sort(field: string, order: any) {
+    const sortOrder = order as 'ascend' | 'descend' | null;
+    Object.keys(this.sortMap).forEach((key) => (this.sortMap[key] = null));
+    if (sortOrder) this.sortMap[field] = sortOrder;
+    this.query$.next({
+      ...this.query$.value,
+      sort: field,
+      order: sortOrder === 'ascend' ? 'asc' : 'desc',
+    });
+  }
+
+  onQueryParamsChange(params: NzTableQueryParams) {
+    const { pageSize, pageIndex } = params;
+    this.query$.next({
+      ...this.query$.value,
+      page: pageIndex,
+      size: pageSize,
+    });
   }
 }

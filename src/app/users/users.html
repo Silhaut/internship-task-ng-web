@@ -71,17 +71,18 @@
   [nzShowSizeChanger]="true"
   [nzPageSizeOptions]="[10, 20, 50]"
   [nzScroll]="{ x: '1200px' }"
+  (nzQueryParams)="onQueryParamsChange($event)"
 >
   <thead>
   <tr>
-    <th>ID</th>
-    <th>Telegram ID</th>
-    <th>Username</th>
-    <th>Имя</th>
-    <th>Фамилия</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['id']" (nzSortOrderChange)="sort('id', $event)">ID</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['telegramId']" (nzSortOrderChange)="sort('telegramId', $event)">Telegram ID</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['username']" (nzSortOrderChange)="sort('username', $event)">Username</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['firstName']" (nzSortOrderChange)="sort('firstName', $event)">Имя</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['lastName']" (nzSortOrderChange)="sort('lastName', $event)">Фамилия</th>
     <th>Роль</th>
     <th>Телефон</th>
-    <th>Создан</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['createdAt']" (nzSortOrderChange)="sort('createdAt', $event)">Создан</th>
   </tr>
   </thead>
   <tbody>
