@@ -44,6 +44,7 @@ export class Login implements OnInit {
           if (res) {
             localStorage.setItem('accessToken', res.accessToken);
             this.router.navigate(['/admin']);
+            this.authService.fetchCurrentUser();
           }
         },
         error: () => {

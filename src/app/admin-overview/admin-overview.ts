@@ -11,6 +11,7 @@ import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../_services/auth';
 
 @Component({
   selector: 'app-admin-overview',
@@ -30,10 +31,17 @@ import { RouterModule } from '@angular/router';
 })
 export class AdminOverview implements OnInit {
   private adminService = inject(AdminService)
+  private authService = inject(AuthService);
+
+  me = this.authService.me
 
   overviewData$!: Observable<AdminOverviewDto>;
 
   ngOnInit() {
+    if (this.me() == undefined) {
+      this.authService.fetchCurrentUser();
+    }
+
     this.adminService.overview().subscribe(result => {
       this.overviewData$ = of(result);
     })

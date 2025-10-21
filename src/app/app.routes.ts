@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './_guards/auth-guard';
+import { roleGuard } from './_guards/roles-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'admin', pathMatch: 'full' },
@@ -7,6 +8,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin-layout/admin.routes').then(c => c.routes),
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard(['ADMIN'])],
   },
+  { path: '403', loadComponent: () => import('./forbidden/forbidden').then(c => c.Forbidden) },
 ];
