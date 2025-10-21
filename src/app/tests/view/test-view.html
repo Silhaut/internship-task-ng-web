@@ -1,0 +1,18 @@
+<nz-page-header>
+  <nz-page-header-title>Информация о тесте</nz-page-header-title>
+</nz-page-header>
+@if (test) {
+  <nz-card>
+    <nz-descriptions nzTitle="Тест" nzBordered [nzColumn]="1">
+      <nz-descriptions-item nzTitle="ID">{{ test.id }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Пользователь прошедший тест">
+        <a [routerLink]="['/admin/users', test.user.id]">
+          &#64;{{ test.user.username }}
+          <span class="fullname">{{ test.user.firstName }} {{ test.user.lastName }}</span>
+        </a>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Зарегестрирован">{{ test.createdAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Последнее обновление">{{ test.updatedAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+    </nz-descriptions>
+  </nz-card>
+}
