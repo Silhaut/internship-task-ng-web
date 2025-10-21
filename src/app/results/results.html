@@ -1,0 +1,76 @@
+<nz-page-header>
+  <nz-page-header-title>Результаты тестов</nz-page-header-title>
+</nz-page-header>
+
+<!--<nz-collapse>-->
+<!--  <nz-collapse-panel nzHeader="Фильтры" [nzActive]="true" [nzExtra]="filterReset">-->
+<!--    <form nz-form [formGroup]="filters" nzLayout="vertical">-->
+<!--      <div nz-flex nzJustify="space-between" nzGap="small">-->
+<!--        <nz-form-item style="width: 100%">-->
+<!--          <nz-form-label>ID</nz-form-label>-->
+<!--          <nz-form-control>-->
+<!--            <input nz-input formControlName="name" placeholder="Введите название" />-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--        -->
+<!--        <nz-form-item style="width: 100%">-->
+<!--          <nz-form-label>ID пользователя</nz-form-label>-->
+<!--          <nz-form-control>-->
+<!--            <input nz-input formControlName="description" />-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </nz-collapse-panel>-->
+<!--</nz-collapse>-->
+
+<nz-divider />
+
+<nz-table
+  [nzData]="results"
+  [nzLoading]="loading"
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="query$.value.size"
+  [nzPageIndex]="query$.value.page"
+  [nzShowSizeChanger]="true"
+  [nzPageSizeOptions]="[10, 20, 50]"
+  (nzQueryParams)="onQueryParamsChange($event)"
+>
+  <thead>
+  <tr>
+    <th nzShowSort [(nzSortOrder)]="sortMap['id']" (nzSortOrderChange)="sort('id', $event)">ID</th>
+    <th>Test ID</th>
+    <th>Пользователь</th>
+    <th>Профессия</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['createdAt']" (nzSortOrderChange)="sort('createdAt', $event)">Создан</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (result of results; track result.id) {
+      <tr>
+        <td>
+          <a [routerLink]="[result.id]">{{ result.id }}</a>
+        </td>
+        <td>
+          <a [routerLink]="['../tests', result.test.id]">{{ result.test.id }}</a>
+        </td>
+        <td>
+          <a [routerLink]="['../users', result.test.user.id]">
+            &#64;{{ result.test.user.username }}
+          </a>
+        </td>
+        <td>
+          <nz-tag [routerLink]="['../professions', result.profession.id]" style="cursor: pointer">
+            {{ result.profession.name }}
+          </nz-tag>
+        </td>
+        <td>{{ result.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
+
+<ng-template #filterReset>
+  <button nz-button nzType="default" nzSize="small" (click)="resetFilters()" [disabled]="filters.dirty" type="button">Сбросить</button>
+</ng-template>

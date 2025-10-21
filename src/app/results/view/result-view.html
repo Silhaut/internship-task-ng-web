@@ -1,0 +1,45 @@
+<nz-page-header>
+  <nz-page-header-title>Результаты теста #{{ testId }}</nz-page-header-title>
+</nz-page-header>
+@if (result) {
+  <nz-card>
+    <nz-descriptions nzBordered [nzColumn]="1">
+      <nz-descriptions-item nzTitle="ID">{{ result.id }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="ID пользователя">
+        <a [routerLink]="['/admin/users', result.test.userId]">
+          {{ result.test.userId }}
+        </a>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Профессия">
+        <nz-tag [routerLink]="['../../professions', result.profession.id]" style="cursor: pointer">
+          {{ result.profession.name }}
+        </nz-tag>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Зарегестрирован">{{ result.createdAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Последнее обновление">{{ result.updatedAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+    </nz-descriptions>
+    <nz-divider />
+    <nz-table nzTemplateMode nzTitle="Оценки по направлениям" nzBordered>
+        <thead>
+        <tr>
+          <th style="width: 30px"></th>
+          <th>Направление</th>
+          <th>Баллы</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (item of result.scoreDetails | keyvalue; track item; let index = $index) {
+            <tr>
+              <td>
+                {{ index + 1 }}
+              </td>
+              <td>
+                {{ item.key }}
+              </td>
+              <td>{{ item.value }}</td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+  </nz-card>
+}

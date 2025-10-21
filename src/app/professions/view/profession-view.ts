@@ -25,6 +25,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     NzDescriptionsModule,
     NzIconModule,
     NzButtonModule,
+    NzTagModule,
   ],
   templateUrl: './profession-view.html',
   styleUrl: './profession-view.scss'

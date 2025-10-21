@@ -11,6 +11,8 @@ export const routes: Routes = [
       { path: 'professions/:id', loadComponent: () => import('../professions/view/profession-view').then(c => c.ProfessionView), },
       { path: 'tests', loadComponent: () => import('../tests/tests').then(c => c.Tests), },
       { path: 'tests/:id', loadComponent: () => import('../tests/view/test-view').then(c => c.TestView), },
+      { path: 'results', loadComponent: () => import('../results/results').then(c => c.Results), },
+      { path: 'results/:id', loadComponent: () => import('../results/view/result-view').then(c => c.ResultView), },
     ]
   },
 ]
