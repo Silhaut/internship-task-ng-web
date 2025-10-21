@@ -5,7 +5,11 @@
   <nz-card [nzTitle]="updateProfessionExtra">
     <nz-descriptions nzBordered [nzColumn]="1">
       <nz-descriptions-item nzTitle="ID">{{ profession.id }}</nz-descriptions-item>
-      <nz-descriptions-item nzTitle="Название">{{ profession.name }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Название">
+        <nz-tag>
+          {{ profession.name }}
+        </nz-tag>
+      </nz-descriptions-item>
       <nz-descriptions-item nzTitle="Описание">{{ profession.description }}</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Зарегестрирован">{{ profession.createdAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
       <nz-descriptions-item nzTitle="Последнее обновление">{{ profession.updatedAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>

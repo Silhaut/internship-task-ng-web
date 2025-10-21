@@ -1,4 +1,4 @@
-import { TestWithUserDto } from './test.dto';
+import { TestDto, TestWithUserDto } from './test.dto';
 import { ProfessionDto } from './profession.dto';
 
 export type TestResultDto = {
@@ -15,6 +15,15 @@ export type TestResultWithTestAndProfessionDto = {
   profession: ProfessionDto;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type TestResultWithTestWithoutUserAndProfessionDto = {
+  id: string;
+  test: TestDto
+  profession: ProfessionDto;
+  createdAt: Date;
+  updatedAt: Date;
+  scoreDetails: any
 }
 
 export type TestResultWithProfessionDto = {
