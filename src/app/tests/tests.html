@@ -1,1 +1,65 @@
-<p>tests works!</p>
+<nz-page-header>
+  <nz-page-header-title>Пройденные тесты</nz-page-header-title>
+</nz-page-header>
+
+<!--<nz-collapse>-->
+<!--  <nz-collapse-panel nzHeader="Фильтры" [nzActive]="true" [nzExtra]="filterReset">-->
+<!--    <form nz-form [formGroup]="filters" nzLayout="vertical">-->
+<!--      <div nz-flex nzJustify="space-between" nzGap="small">-->
+<!--        <nz-form-item style="width: 100%">-->
+<!--          <nz-form-label>ID</nz-form-label>-->
+<!--          <nz-form-control>-->
+<!--            <input nz-input formControlName="name" placeholder="Введите название" />-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--        -->
+<!--        <nz-form-item style="width: 100%">-->
+<!--          <nz-form-label>ID пользователя</nz-form-label>-->
+<!--          <nz-form-control>-->
+<!--            <input nz-input formControlName="description" />-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </nz-collapse-panel>-->
+<!--</nz-collapse>-->
+
+<nz-divider />
+
+<nz-table
+  [nzData]="tests"
+  [nzLoading]="loading"
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="query$.value.size"
+  [nzPageIndex]="query$.value.page"
+  [nzShowSizeChanger]="true"
+  [nzPageSizeOptions]="[10, 20, 50]"
+  (nzQueryParams)="onQueryParamsChange($event)"
+>
+  <thead>
+  <tr>
+    <th nzShowSort [(nzSortOrder)]="sortMap['id']" (nzSortOrderChange)="sort('id', $event)">ID</th>
+    <th>Пользователь</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['createdAt']" (nzSortOrderChange)="sort('createdAt', $event)">Создан</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (test of tests; track test.id) {
+      <tr>
+        <td>
+          <a [routerLink]="[test.id]">{{ test.id }}</a>
+        </td>
+        <td>
+          &#64;{{ test.user.username }}
+          <span class="fullname">{{ test.user.firstName }} {{ test.user.lastName }}</span>
+        </td>
+        <td>{{ test.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
+
+<ng-template #filterReset>
+  <button nz-button nzType="default" nzSize="small" (click)="resetFilters()" [disabled]="filters.dirty" type="button">Сбросить</button>
+</ng-template>
