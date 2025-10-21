@@ -92,7 +92,11 @@
       <tbody>
         @for (test of overview.tests.latest; track test.id) {
           <tr>
-            <td>{{ test.id }}</td>
+            <td>
+              <a [routerLink]="['tests', test.id]">
+                {{ test.id }}
+              </a>
+            </td>
             <td>
               &#64;{{ test.user.username }}
               <span class="fullname">{{ test.user.firstName }} {{ test.user.lastName }}</span>

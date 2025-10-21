@@ -10,6 +10,7 @@ export const routes: Routes = [
       { path: 'professions', loadComponent: () => import('../professions/professions').then(c => c.Professions), },
       { path: 'professions/:id', loadComponent: () => import('../professions/view/profession-view').then(c => c.ProfessionView), },
       { path: 'tests', loadComponent: () => import('../tests/tests').then(c => c.Tests), },
+      { path: 'tests/:id', loadComponent: () => import('../tests/view/test-view').then(c => c.TestView), },
     ]
   },
 ]
