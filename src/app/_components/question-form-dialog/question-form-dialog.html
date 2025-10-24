@@ -1,0 +1,21 @@
+<div>
+  <form nz-form [formGroup]="form" nzLayout="vertical">
+    <nz-form-item>
+      <nz-form-label nzRequired>Текст к вопросу</nz-form-label>
+      <nz-form-control nzHasFeedback [nzErrorTip]="errorTip">
+        <input nz-input formControlName="text" type="text">
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <ng-template #errorTip let-control>
+    @if (control.hasError('required')) {
+      Это обязательное поле
+    }
+  </ng-template>
+</div>
+<div *nzModalFooter>
+  <button type="button" nz-button nzType="default" (click)="onCancel()">Отменить</button>
+  <button type="submit" nz-button nzType="primary" [disabled]="form.invalid" (click)="onSave()">
+    {{ action === 'POST' ? 'Добавить' : 'Обновить' }}
+  </button>
+</div>

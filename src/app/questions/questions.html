@@ -1,0 +1,66 @@
+<nz-page-header>
+  <nz-page-header-title>Вопросы</nz-page-header-title>
+</nz-page-header>
+
+<nz-collapse>
+  <nz-collapse-panel nzHeader="Фильтры" [nzActive]="true" [nzExtra]="filterReset">
+    <form nz-form [formGroup]="filters" nzLayout="vertical">
+      <div nz-flex nzJustify="space-between" nzGap="small">
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Текст</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="text" placeholder="Введите название" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-divider />
+
+<nz-table
+  [nzData]="questions"
+  [nzLoading]="loading"
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="query$.value.size"
+  [nzPageIndex]="query$.value.page"
+  [nzShowSizeChanger]="true"
+  [nzPageSizeOptions]="[10, 20, 50]"
+  (nzQueryParams)="onQueryParamsChange($event)"
+  [nzTitle]="addQuestionButtonExtra"
+>
+  <thead>
+  <tr>
+    <th nzShowSort [(nzSortOrder)]="sortMap['id']" (nzSortOrderChange)="sort('id', $event)">ID</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['text']" (nzSortOrderChange)="sort('text', $event)">Название</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['createdAt']" (nzSortOrderChange)="sort('createdAt', $event)">Создан</th>
+    <th style="width: 30px"></th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (question of questions; track question.id) {
+      <tr>
+        <td>
+          <a [routerLink]="[question.id]">{{ question.id }}</a>
+        </td>
+        <td>{{ question.text }}</td>
+        <td>{{ question.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+        <td>
+          <button nz-button nzType="default" nzSize="small" nz-popconfirm (click)="createOrUpdateProfession(question, 'PUT')">
+            <nz-icon nzTheme="outline" nzType="edit"></nz-icon>
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
+
+<ng-template #filterReset>
+  <button nz-button nzType="default" nzSize="small" (click)="resetFilters()" type="button">Сбросить</button>
+</ng-template>
+
+<ng-template #addQuestionButtonExtra>
+  <button nz-button nzType="primary" (click)="createOrUpdateProfession(null, 'POST')">Добавить вопрос</button>
+</ng-template>

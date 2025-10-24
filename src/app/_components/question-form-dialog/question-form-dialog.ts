@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NzModalModule, NzModalRef } from 'ng-zorro-antd/modal';
-import { ProfessionDto } from '../../_dto/profession.dto';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { QuestionDto } from '../../_dto/question.dto';
 
 @Component({
-  selector: 'app-update-profession-dialog',
+  selector: 'app-question-form-dialog',
   imports: [
     CommonModule,
     NzFormModule,
@@ -17,28 +17,31 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzModalModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './update-profession-dialog.html',
-  styleUrl: './update-profession-dialog.scss'
+  templateUrl: './question-form-dialog.html',
+  styleUrl: './question-form-dialog.scss'
 })
-export class UpdateProfessionDialog implements OnInit {
+export class QuestionFormDialog implements OnInit {
   private modal = inject(NzModalRef)
   private formBuilder = inject(FormBuilder);
 
-  profession!: ProfessionDto;
+  question!: QuestionDto;
   form!: FormGroup;
+  action!: 'POST' | 'PUT';
 
   ngOnInit() {
     const data = this.modal.getConfig().nzData;
-    this.profession = data.profession;
+    this.question = data.question;
+    this.action = data.action;
 
     this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      description: [null, Validators.required],
+      text: [null, Validators.required],
     })
 
-    this.form.patchValue({
-      ...this.profession
-    })
+    if (this.action === 'PUT') {
+      this.form.patchValue({
+        ...this.question
+      })
+    }
   }
 
   onCancel() {

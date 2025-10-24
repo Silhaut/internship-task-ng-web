@@ -1,7 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProfessionsService } from '../../_services/professions';
-import { ProfessionDto } from '../../_dto/profession.dto';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { QuestionFormDialog } from '../../_components/question-form-dialog/question-form-dialog';
+import { QuestionsService } from '../../_services/questions';
 import { CommonModule } from '@angular/common';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -10,9 +12,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { UpdateProfessionDialog } from '../../_components/update-profession-dialog/update-profession-dialog';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { QuestionWithAnswerOptionsDto } from '../../_dto/question-with-answer-options.dto';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'app-view',
@@ -25,55 +26,56 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     NzDescriptionsModule,
     NzIconModule,
     NzButtonModule,
-    NzTagModule,
+    NzTableModule,
   ],
-  templateUrl: './profession-view.html',
-  styleUrl: './profession-view.scss'
+  templateUrl: './question-view.html',
+  styleUrl: './question-view.scss'
 })
-export class ProfessionView implements OnInit {
-  private professionsService = inject(ProfessionsService);
+export class QuestionView implements OnInit {
+  private questionsService = inject(QuestionsService);
   private route = inject(ActivatedRoute);
   private modal = inject(NzModalService)
   private message = inject(NzMessageService);
 
-  professionId!: string;
-  profession!: ProfessionDto;
+  questionId!: string;
+  question!: QuestionWithAnswerOptionsDto;
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.professionId = params['id'];
-      this.loadProfession()
+      this.questionId = params['id'];
+      this.loadQuestion()
     })
   }
 
-  loadProfession() {
-    this.professionsService.getProfession(this.professionId).subscribe(result => {
-      this.profession = result;
+  loadQuestion() {
+    this.questionsService.getQuestionWithAnswers(this.questionId).subscribe(result => {
+      this.question = result;
     });
   }
 
   updateProfession() {
     const dialogRef = this.modal.create({
-      nzTitle: 'Обновление профессии',
-      nzContent: UpdateProfessionDialog,
+      nzTitle: 'Обновление вопроса',
+      nzContent: QuestionFormDialog,
       nzWidth: 700,
       nzData: {
-        profession: this.profession
+        question: this.question,
+        action: 'PUT'
       }
     })
 
     dialogRef.afterClose.subscribe((dto) => {
       if (dto) {
-        this.professionsService.update(this.professionId, dto)
+        this.questionsService.update(this.questionId, dto)
           .subscribe({
             next: (result) => {
               if (result) {
-                this.message.success(`Профессия успешно обновлена`)
-                this.loadProfession()
+                this.message.success(`Вопрос успешно обновлена`)
+                this.loadQuestion()
               }
             },
             error: (err) => {
-              this.message.error(`Проищошла ошибка при обновлении профессии:`, err.message)
+              this.message.error(`Произошла ошибка при обновлении вопроса:`, err.message)
             }
           })
       }

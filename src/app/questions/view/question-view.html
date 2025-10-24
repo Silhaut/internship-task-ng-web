@@ -1,0 +1,40 @@
+<nz-page-header>
+  <nz-page-header-title>Информация о вопросе</nz-page-header-title>
+</nz-page-header>
+@if (question) {
+  <nz-card [nzTitle]="updateProfessionExtra">
+    <nz-descriptions nzBordered [nzColumn]="1">
+      <nz-descriptions-item nzTitle="ID">{{ question.id }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Текст вопроса">{{ question.text }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Создан">{{ question.createdAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Последнее обновление">{{ question.updatedAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+    </nz-descriptions>
+  </nz-card>
+  <nz-divider />
+  <nz-table nzTemplateMode nzTitle="Варианты ответов" nzBordered>
+    <thead>
+    <tr>
+      <th style="width: 30px"></th>
+      <th>Текст ответов</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (item of question.answerOptions; track item; let index = $index) {
+        <tr>
+          <td>
+            {{ index + 1 }}
+          </td>
+          <td>
+            {{ item.text }}
+          </td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+}
+
+<ng-template #updateProfessionExtra>
+  <button nz-button nzType="primary" (click)="updateProfession()">
+    <nz-icon nzTheme="outline" nzType="edit"></nz-icon> Обновить
+  </button>
+</ng-template>

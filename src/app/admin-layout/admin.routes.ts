@@ -13,6 +13,8 @@ export const routes: Routes = [
       { path: 'tests/:id', loadComponent: () => import('../tests/view/test-view').then(c => c.TestView), },
       { path: 'results', loadComponent: () => import('../results/results').then(c => c.Results), },
       { path: 'results/:id', loadComponent: () => import('../results/view/result-view').then(c => c.ResultView), },
+      { path: 'questions', loadComponent: () => import('../questions/questions').then(c => c.Questions), },
+      { path: 'questions/:id', loadComponent: () => import('../questions/view/question-view').then(c => c.QuestionView), },
     ]
   },
 ]
