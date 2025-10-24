@@ -11,21 +11,32 @@
     </nz-descriptions>
   </nz-card>
   <nz-divider />
-  <nz-table nzTemplateMode nzTitle="Варианты ответов" nzBordered>
+  <nz-table nzTemplateMode [nzTitle]="addAnswerOptionExtra" nzBordered>
     <thead>
     <tr>
       <th style="width: 30px"></th>
       <th>Текст ответов</th>
+      <th style="width: 60px"></th>
     </tr>
     </thead>
     <tbody>
-      @for (item of question.answerOptions; track item; let index = $index) {
+      @for (option of question.answerOptions; track option; let index = $index) {
         <tr>
           <td>
             {{ index + 1 }}
           </td>
           <td>
-            {{ item.text }}
+            <a [routerLink]="['/admin/answer-options', option.id]">{{ option.text }}</a>
+          </td>
+          <td nz-flex nzGap="small">
+            <button nz-button nzType="default" nzSize="small" (click)="addAnswerOption(option, 'PUT')">
+              <nz-icon nzTheme="outline" nzType="edit"></nz-icon>
+            </button>
+            <button nz-button nzDanger nzType="default" nzSize="small"
+                    nz-popconfirm nzPopconfirmTitle="Вы действительно хотите удалить вариант ответа?"
+                    (nzOnConfirm)="deleteAnswerOption(option.id)">
+              <nz-icon nzTheme="outline" nzType="delete"></nz-icon>
+            </button>
           </td>
         </tr>
       }
@@ -35,6 +46,15 @@
 
 <ng-template #updateProfessionExtra>
   <button nz-button nzType="primary" (click)="updateProfession()">
-    <nz-icon nzTheme="outline" nzType="edit"></nz-icon> Обновить
+    <nz-icon nzTheme="outline" nzType="edit"></nz-icon>Обновить
   </button>
+</ng-template>
+
+<ng-template #addAnswerOptionExtra>
+  <div nz-flex nzJustify="space-between" nzAlign="center">
+    <h3>Варианты ответов</h3>
+    <button nz-button nzType="primary" nzSize="small" (click)="addAnswerOption(null, 'POST')">
+      <nz-icon nzTheme="outline" nzType="plus"></nz-icon>Добавить вариант ответа
+    </button>
+  </div>
 </ng-template>

@@ -1,0 +1,24 @@
+<nz-page-header>
+  <nz-page-header-title>Информация о варианте ответа</nz-page-header-title>
+</nz-page-header>
+@if (option) {
+  <nz-card [nzTitle]="update">
+    <nz-descriptions nzBordered [nzColumn]="1">
+      <nz-descriptions-item nzTitle="ID">{{ option.id }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Вариант ответа">{{ option.text }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Вопрос">
+        <a [routerLink]="['/admin/questions', option.question.id]">
+          {{ option.question.text }}
+        </a>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Создан">{{ option.createdAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+      <nz-descriptions-item nzTitle="Последнее обновление">{{ option.updatedAt | date: 'dd.MM.yyyy HH:mm' }}</nz-descriptions-item>
+    </nz-descriptions>
+  </nz-card>
+}
+
+<ng-template #update>
+  <button nz-button nzType="primary" (click)="updateAnswerOption()">
+    <nz-icon nzTheme="outline" nzType="edit"></nz-icon>Обновить
+  </button>
+</ng-template>

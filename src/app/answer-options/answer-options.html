@@ -1,0 +1,74 @@
+<nz-page-header>
+  <nz-page-header-title>Варианты ответов</nz-page-header-title>
+</nz-page-header>
+
+<nz-collapse>
+  <nz-collapse-panel nzHeader="Фильтры" [nzActive]="true" [nzExtra]="filterReset">
+    <form nz-form [formGroup]="filters" nzLayout="vertical">
+      <div nz-flex nzJustify="space-between" nzGap="small">
+        <nz-form-item style="width: 100%">
+          <nz-form-label>ID</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="id" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%">
+          <nz-form-label>Текст</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="text" placeholder="Введите текст" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+  </nz-collapse-panel>
+</nz-collapse>
+
+<nz-divider />
+
+<nz-table
+  [nzData]="answerOptions"
+  [nzLoading]="loading"
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="query$.value.size"
+  [nzPageIndex]="query$.value.page"
+  [nzShowSizeChanger]="true"
+  [nzPageSizeOptions]="[10, 20, 50]"
+  (nzQueryParams)="onQueryParamsChange($event)"
+>
+  <thead>
+  <tr>
+    <th nzShowSort [(nzSortOrder)]="sortMap['id']" (nzSortOrderChange)="sort('id', $event)">ID</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['text']" (nzSortOrderChange)="sort('text', $event)">Вариант ответа</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['questionId']" (nzSortOrderChange)="sort('questionId', $event)">Вопрос</th>
+    <th nzShowSort [(nzSortOrder)]="sortMap['createdAt']" (nzSortOrderChange)="sort('createdAt', $event)">Создан</th>
+    <th style="width: 30px"></th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (option of answerOptions; track option.id) {
+      <tr>
+        <td>
+          <a [routerLink]="[option.id]">{{ option.id }}</a>
+        </td>
+        <td>{{ option.text }}</td>
+        <td>
+          <a [routerLink]="['/admin/questions', option.question.id]">
+            {{ option.question.text }}
+          </a>
+        </td>
+        <td>{{ option.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+        <td>
+          <button nz-button nzType="default" nzSize="small" nz-popconfirm (click)="updateAnswerOption(option)">
+            <nz-icon nzTheme="outline" nzType="edit"></nz-icon>
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
+
+<ng-template #filterReset>
+  <button nz-button nzType="default" nzSize="small" (click)="resetFilters()" type="button">Сбросить</button>
+</ng-template>

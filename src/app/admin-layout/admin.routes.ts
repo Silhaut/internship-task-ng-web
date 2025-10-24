@@ -15,6 +15,8 @@ export const routes: Routes = [
       { path: 'results/:id', loadComponent: () => import('../results/view/result-view').then(c => c.ResultView), },
       { path: 'questions', loadComponent: () => import('../questions/questions').then(c => c.Questions), },
       { path: 'questions/:id', loadComponent: () => import('../questions/view/question-view').then(c => c.QuestionView), },
+      { path: 'answer-options', loadComponent: () => import('../answer-options/answer-options').then(c => c.AnswerOptions), },
+      { path: 'answer-options/:id', loadComponent: () => import('../answer-options/view/answer-option-view').then(c => c.AnswerOptionView), },
     ]
   },
 ]

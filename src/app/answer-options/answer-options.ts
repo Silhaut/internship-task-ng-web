@@ -2,10 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { QuestionDto } from '../_dto/question.dto';
 import { BehaviorSubject, debounceTime, skip } from 'rxjs';
 import { NzTableModule, NzTableQueryParams } from 'ng-zorro-antd/table';
-import { QuestionDto } from '../_dto/question.dto';
-import { QuestionsService } from '../_services/questions';
+import { TextFieldFormDialog } from '../_components/text-field-form-dialog/text-field-form-dialog';
+import { AnswerOptionService } from '../_services/answer-option';
+import { AnswerOptionWithQuestionDto } from '../_dto/answer-option.dto';
 import { CommonModule } from '@angular/common';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
@@ -18,10 +20,9 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RouterModule } from '@angular/router';
-import { TextFieldFormDialog } from '../_components/text-field-form-dialog/text-field-form-dialog';
 
 @Component({
-  selector: 'app-questions',
+  selector: 'app-answer-options',
   imports: [
     CommonModule,
     NzPageHeaderModule,
@@ -38,16 +39,16 @@ import { TextFieldFormDialog } from '../_components/text-field-form-dialog/text-
     ReactiveFormsModule,
     RouterModule,
   ],
-  templateUrl: './questions.html',
-  styleUrl: './questions.scss'
+  templateUrl: './answer-options.html',
+  styleUrl: './answer-options.scss'
 })
-export class Questions implements OnInit {
-  private questionsService = inject(QuestionsService);
+export class AnswerOptions implements OnInit {
+  private answerOptionsService = inject(AnswerOptionService);
   private fb = inject(FormBuilder);
   private modal = inject(NzModalService)
   private message = inject(NzMessageService);
 
-  questions: QuestionDto[] = [];
+  answerOptions: AnswerOptionWithQuestionDto[] = [];
   total = 0;
   loading = false;
 
@@ -82,19 +83,19 @@ export class Questions implements OnInit {
         });
       });
 
-    this.query$.subscribe(() => this.loadProfessions());
+    this.query$.subscribe(() => this.loadAnswerOptions());
   }
 
-  loadProfessions() {
+  loadAnswerOptions() {
     this.loading = true;
-    this.questionsService.getQuestions(this.query$.value).subscribe({
+    this.answerOptionsService.getAnswerOptions(this.query$.value).subscribe({
       next: (res) => {
-        this.questions = res.data;
+        this.answerOptions = res.data;
         this.total = res.totalSize;
         this.loading = false;
       },
       error: (err) => {
-        this.message.error('Произошла ошибка при загрузке вопросов');
+        this.message.error('Произошла ошибка при загрузке вариантов ответа');
         this.loading = false;
       }
     });
@@ -125,50 +126,32 @@ export class Questions implements OnInit {
     });
   }
 
-  createOrUpdateProfession(question: QuestionDto | null, action: 'POST' | 'PUT') {
-    const titleLabel = action === 'POST' ? 'Добавление' : 'Обновление'
-
+  updateAnswerOption(answerOption: AnswerOptionWithQuestionDto) {
     const dialogRef = this.modal.create({
-      nzTitle: `${titleLabel} вопроса`,
+      nzTitle: `Добавление варианта ответа`,
       nzContent: TextFieldFormDialog,
       nzWidth: 700,
       nzData: {
-        question,
-        action,
-        formLabel: 'Текст к вопросу'
+        object: answerOption,
+        action: 'PUT',
+        formLabel: 'Текст к варианту ответа'
       }
     })
 
     dialogRef.afterClose.subscribe((dto) => {
       if (dto) {
-        if (action === 'POST') {
-          this.questionsService.addQuestion(dto)
-            .subscribe({
-              next: (result) => {
-                if (result) {
-                  this.message.success(`Вопрос успешно добавлен`)
-                  this.loadProfessions()
-                }
-              },
-              error: (err) => {
-                this.message.error(`Произошла ошибка при добавлении вопроса:`, err.message)
+        this.answerOptionsService.update(answerOption!.id, dto)
+          .subscribe({
+            next: (result) => {
+              if (result) {
+                this.message.success(`Вариант ответа успешно обновлен`)
+                this.loadAnswerOptions()
               }
-            })
-        }
-        if (action === 'PUT') {
-          this.questionsService.update(question!.id, dto)
-            .subscribe({
-              next: (result) => {
-                if (result) {
-                  this.message.success(`Вопрос успешно обновлен`)
-                  this.loadProfessions()
-                }
-              },
-              error: (err) => {
-                this.message.error(`Произошла ошибка при обновлении вопроса:`, err.message)
-              }
-            })
-        }
+            },
+            error: (err) => {
+              this.message.error(`Произошла ошибка при обновлении варианта ответа:`, err.message)
+            }
+          })
       }
     })
   }

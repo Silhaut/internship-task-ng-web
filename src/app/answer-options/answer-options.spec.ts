@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuestionFormDialog } from './question-form-dialog';
+import { AnswerOptions } from './answer-options';
 
-describe('QuestionFormDialog', () => {
-  let component: QuestionFormDialog;
-  let fixture: ComponentFixture<QuestionFormDialog>;
+describe('AnswerOptions', () => {
+  let component: AnswerOptions;
+  let fixture: ComponentFixture<AnswerOptions>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuestionFormDialog]
+      imports: [AnswerOptions]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(QuestionFormDialog);
+    fixture = TestBed.createComponent(AnswerOptions);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,14 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { NzModalModule, NzModalRef } from 'ng-zorro-antd/modal';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { QuestionDto } from '../../_dto/question.dto';
 import { CommonModule } from '@angular/common';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { QuestionDto } from '../../_dto/question.dto';
+import { AnswerOptionDto } from '../../_dto/answer-option.dto';
 
 @Component({
-  selector: 'app-question-form-dialog',
+  selector: 'app-text-field-form-dialog',
   imports: [
     CommonModule,
     NzFormModule,
@@ -17,21 +18,23 @@ import { QuestionDto } from '../../_dto/question.dto';
     NzModalModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './question-form-dialog.html',
-  styleUrl: './question-form-dialog.scss'
+  templateUrl: './text-field-form-dialog.html',
+  styleUrl: './text-field-form-dialog.scss'
 })
-export class QuestionFormDialog implements OnInit {
+export class TextFieldFormDialog implements OnInit {
   private modal = inject(NzModalRef)
   private formBuilder = inject(FormBuilder);
 
-  question!: QuestionDto;
+  object?: QuestionDto | AnswerOptionDto;
   form!: FormGroup;
   action!: 'POST' | 'PUT';
+  formLabel!: string;
 
   ngOnInit() {
     const data = this.modal.getConfig().nzData;
-    this.question = data.question;
+    this.object = data.object;
     this.action = data.action;
+    this.formLabel = data.formLabel;
 
     this.form = this.formBuilder.group({
       text: [null, Validators.required],
@@ -39,7 +42,7 @@ export class QuestionFormDialog implements OnInit {
 
     if (this.action === 'PUT') {
       this.form.patchValue({
-        ...this.question
+        ...this.object
       })
     }
   }
